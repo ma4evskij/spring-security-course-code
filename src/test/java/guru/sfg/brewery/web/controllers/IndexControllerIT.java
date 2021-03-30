@@ -21,6 +21,6 @@ public class IndexControllerIT extends BaseIT {
 
     @Test
     void test() throws Exception {
-        mvc.perform(get("/")).andExpect(status().isOk());
+        mockMvc.perform(get("/")).andExpect(status().isOk());
     }
 }

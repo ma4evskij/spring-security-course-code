@@ -24,35 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by jt on 6/12/20.
  */
 @WebMvcTest
-public class BeerControllerIT {
-
-    @Autowired
-    WebApplicationContext wac;
-
-    MockMvc mockMvc;
-
-    @MockBean
-    BeerRepository beerRepository;
-
-    @MockBean
-    BeerInventoryRepository beerInventoryRepository;
-
-    @MockBean
-    BreweryService breweryService;
-
-    @MockBean
-    CustomerRepository customerRepository;
-
-    @MockBean
-    BeerService beerService;
-
-    @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders
-                .webAppContextSetup(wac)
-                .apply(springSecurity())
-                .build();
-    }
+public class BeerControllerIT extends BaseIT{
 
     @WithMockUser("spring")
     @Test
@@ -71,7 +43,13 @@ public class BeerControllerIT {
                 .andExpect(model().attributeExists("beer"));
     }
 
-
+    @Test
+    void findBeersAssignment() throws Exception{
+        mockMvc.perform(get("/beers/find"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("beers/findBeers"))
+                .andExpect(model().attributeExists("beer"));
+    }
 
 
 }

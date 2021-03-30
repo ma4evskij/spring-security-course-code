@@ -19,7 +19,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -30,7 +29,7 @@ public abstract class BaseIT {
     @Autowired
     WebApplicationContext wac;
 
-    MockMvc mvc;
+    MockMvc mockMvc;
 
     @MockBean
     BeerRepository beerRepository;
@@ -49,7 +48,7 @@ public abstract class BaseIT {
 
     @BeforeEach
     void setUp() {
-        mvc = MockMvcBuilders
+        mockMvc = MockMvcBuilders
                 .webAppContextSetup(wac)
                 .apply(springSecurity())
                 .build();
