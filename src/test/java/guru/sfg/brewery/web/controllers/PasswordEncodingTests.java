@@ -29,6 +29,7 @@ public class PasswordEncodingTests {
 
         System.out.println(bcrypt.encode(PASSWORD));
         System.out.println(bcrypt.encode(PASSWORD));
+        System.out.println(bcrypt.encode("guru"));
     }
 
     @Test
@@ -45,6 +46,7 @@ public class PasswordEncodingTests {
 
         System.out.println(ldap.encode(PASSWORD));
         System.out.println(ldap.encode(PASSWORD));
+        System.out.println(ldap.encode("tiger"));
 
         var encodedPassword = ldap.encode(PASSWORD);
 
