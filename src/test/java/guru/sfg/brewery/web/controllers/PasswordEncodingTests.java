@@ -11,12 +11,36 @@
 package guru.sfg.brewery.web.controllers;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.util.DigestUtils;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PasswordEncodingTests {
     
     final static String PASSWORD = "password";
+
+    @Test
+    void testSha256() {
+        var sha256 = new StandardPasswordEncoder();
+
+        System.out.println(sha256.encode(PASSWORD));
+        System.out.println(sha256.encode(PASSWORD));
+    }
+
+    @Test
+    void testLdap() {
+        var ldap = new LdapShaPasswordEncoder();
+
+        System.out.println(ldap.encode(PASSWORD));
+        System.out.println(ldap.encode(PASSWORD));
+
+        var encodedPassword = ldap.encode(PASSWORD);
+
+        assertTrue(ldap.matches(PASSWORD, encodedPassword));
+    }
 
     @Test
     void testNoOp() {

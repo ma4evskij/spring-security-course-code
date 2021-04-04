@@ -7,8 +7,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 /**
  * Created by jt on 6/13/20.
@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
+        return new StandardPasswordEncoder();
     }
 
     @Override
@@ -43,11 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("spring")
-                .password("guru")
+                .password("{SSHA}Jr7TaGIs99cTbxklFcoGbrmueFX99wDFw4TLog==")
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("password")
+                .password("4052692a20f3c65f6022588e3ed9b6cfeb79bccca9a6229345327836f3513860c54c59825a870f96")
                 .roles("USER")
                 .and()
                 .withUser("scott")
