@@ -1,6 +1,7 @@
 package guru.sfg.brewery.config;
 
-import guru.sfg.brewery.security.RestHeaderAuthFilter;
+import guru.sfg.brewery.security.HeaderRestAuthFilter;
+import guru.sfg.brewery.security.UrlRestAuthFilter;
 import guru.sfg.brewery.security.SgfPasswordEncoderFactories;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,12 +22,20 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager manager) {
-        var restFilter = new RestHeaderAuthFilter(new AntPathRequestMatcher("/api/**"));
+    HeaderRestAuthFilter restHeaderAuthFilter(AuthenticationManager manager) {
+        var restFilter = new HeaderRestAuthFilter(new AntPathRequestMatcher("/api/**"));
 
         restFilter.setAuthenticationManager(manager);
 
         return restFilter;
+    }
+
+    UrlRestAuthFilter restUrlAuthFilter(AuthenticationManager manager) {
+        var restUrlFilter = new UrlRestAuthFilter(new AntPathRequestMatcher("/api/**"));
+
+        restUrlFilter.setAuthenticationManager(manager);
+
+        return  restUrlFilter;
     }
 
     @Bean
@@ -39,6 +48,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 http
                 .addFilterBefore(
                         restHeaderAuthFilter(authenticationManager()),
+                        UsernamePasswordAuthenticationFilter.class
+                )
+                .addFilterBefore(
+                        restUrlAuthFilter(authenticationManager()),
                         UsernamePasswordAuthenticationFilter.class
                 )
                 .csrf().disable();

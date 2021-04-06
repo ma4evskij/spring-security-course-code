@@ -27,12 +27,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 @Slf4j
-public class RestHeaderAuthFilter extends AbstractAuthenticationProcessingFilter {
+public abstract class AbstractRestAuthFilter extends AbstractAuthenticationProcessingFilter {
 
-    public RestHeaderAuthFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
+    public AbstractRestAuthFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
         super(requiresAuthenticationRequestMatcher);
     }
 
@@ -64,6 +63,7 @@ public class RestHeaderAuthFilter extends AbstractAuthenticationProcessingFilter
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
+
         var userName = getUsername(request);
 
         var password = getPassword(request);
@@ -103,17 +103,7 @@ public class RestHeaderAuthFilter extends AbstractAuthenticationProcessingFilter
         );
     }
 
-    private String getPassword(HttpServletRequest request) {
-        return Optional
-                .ofNullable(request.getHeader("Api-Secret"))
-                .orElse("");
-    }
+    protected abstract String getPassword(HttpServletRequest request);
 
-    private String getUsername(HttpServletRequest request) {
-        return Optional
-                .ofNullable(request.getHeader("Api-Key"))
-                .orElse("");
-    }
-
-
+    protected abstract String getUsername(HttpServletRequest request);
 }
