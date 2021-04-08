@@ -45,12 +45,12 @@ public class UserDataLoader implements CommandLineRunner {
     }
 
     private void loadAuthoritiesData() {
-        var saved = authorityRepository.findByRoleIn(List.of("ADMIN", "USER", "CUSTOMER"));
+        var saved = authorityRepository.findByRoleIn(List.of("ROLE_ADMIN", "ROLE_USER", "ROLE_CUSTOMER"));
 
         var authoritiesList = Arrays.asList(
-                Authority.builder().role("ADMIN").build(),
-                Authority.builder().role("USER").build(),
-                Authority.builder().role("CUSTOMER").build()
+                Authority.builder().role("ROLE_ADMIN").build(),
+                Authority.builder().role("ROLE_USER").build(),
+                Authority.builder().role("ROLE_CUSTOMER").build()
         );
 
         authoritiesList.removeAll(saved);
@@ -73,7 +73,7 @@ public class UserDataLoader implements CommandLineRunner {
                             .username("spring")
                             .password(passwordEncoder.encode("guru"))
                             .authority(
-                                    authorityRepository.findByRole("ADMIN").get()
+                                    authorityRepository.findByRole("ROLE_ADMIN").get()
                             )
                             .build()
             );
@@ -87,7 +87,7 @@ public class UserDataLoader implements CommandLineRunner {
                             .username("user")
                             .password(passwordEncoder.encode("password"))
                             .authority(
-                                    authorityRepository.findByRole("USER").get()
+                                    authorityRepository.findByRole("ROLE_USER").get()
                             )
                             .build()
             );
@@ -101,7 +101,7 @@ public class UserDataLoader implements CommandLineRunner {
                             .username("scott")
                             .password(passwordEncoder.encode("tiger"))
                             .authority(
-                                    authorityRepository.findByRole("CUSTOMER").get()
+                                    authorityRepository.findByRole("ROLE_CUSTOMER").get()
                             )
                             .build()
             );
