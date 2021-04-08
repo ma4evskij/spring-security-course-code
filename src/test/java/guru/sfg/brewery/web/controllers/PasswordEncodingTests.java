@@ -10,6 +10,7 @@
 
 package guru.sfg.brewery.web.controllers;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
@@ -23,6 +24,7 @@ public class PasswordEncodingTests {
     
     final static String PASSWORD = "password";
 
+    @Ignore
     @Test
     void testBcrypt15() {
         var bcrypt15 = new BCryptPasswordEncoder(15);
