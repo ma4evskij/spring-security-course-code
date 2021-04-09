@@ -1,3 +1,13 @@
+/*
+ * Copyright 2020 Russian Post
+ *
+ * This source code is Russian Post Confidential Proprietary.
+ * This software is protected by copyright. All rights and titles are reserved.
+ * You shall not use, copy, distribute, modify, decompile, disassemble or reverse engineer the software.
+ * Otherwise this violation would be treated by law and would be subject to legal prosecution.
+ * Legal use of the software provides receipt of a license from the right holder only.
+ */
+
 package guru.sfg.brewery.domain.security;
 
 import lombok.AllArgsConstructor;
@@ -16,55 +26,29 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Transient;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-/**
- * Created by jt on 6/21/20.
- */
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-public class User {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String username;
-    private String password;
+    private String name;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 
     @Singular
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
+    @JoinTable(name = "role_authority",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
-    private Set<Role> roles;
-
-    @Transient
     private Set<Authority> authorities;
-
-    public Set<Authority> getAuthorities() {
-        return this.roles.stream()
-                .map(Role::getAuthorities)
-                .flatMap(Set::stream)
-                .collect(Collectors.toSet());
-    }
-
-    @Builder.Default
-    private Boolean accountNonExpired = true;
-
-    @Builder.Default
-    private Boolean accountNonLocked = true;
-
-    @Builder.Default
-    private Boolean credentialsNonExpired = true;
-
-    @Builder.Default
-    private Boolean enabled = true;
-
 }
